@@ -50,6 +50,15 @@ export class Registry extends Entity {
   set users(value: Array<string>) {
     this.set("users", Value.fromStringArray(value));
   }
+
+  get snapshots(): Array<string> {
+    let value = this.get("snapshots");
+    return value!.toStringArray();
+  }
+
+  set snapshots(value: Array<string>) {
+    this.set("snapshots", Value.fromStringArray(value));
+  }
 }
 
 export class User extends Entity {
@@ -108,5 +117,73 @@ export class User extends Entity {
 
   set updated(value: BigInt) {
     this.set("updated", Value.fromBigInt(value));
+  }
+}
+
+export class Snapshot extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Snapshot entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Snapshot must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Snapshot", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Snapshot | null {
+    return changetype<Snapshot | null>(store.get("Snapshot", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get registry(): string {
+    let value = this.get("registry");
+    return value!.toString();
+  }
+
+  set registry(value: string) {
+    this.set("registry", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get stakerAddresses(): Array<Bytes> {
+    let value = this.get("stakerAddresses");
+    return value!.toBytesArray();
+  }
+
+  set stakerAddresses(value: Array<Bytes>) {
+    this.set("stakerAddresses", Value.fromBytesArray(value));
+  }
+
+  get stakerBalances(): Array<BigInt> {
+    let value = this.get("stakerBalances");
+    return value!.toBigIntArray();
+  }
+
+  set stakerBalances(value: Array<BigInt>) {
+    this.set("stakerBalances", Value.fromBigIntArray(value));
   }
 }

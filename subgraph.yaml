@@ -8,6 +8,7 @@ dataSources:
       source:
           address: "0x3ebf01fb94e7f71eaa92afe3d38a17a7e6d4278b"
           abi: VeSheep
+          startBlock: 19487837 # https://bscscan.com/tx/0x8fe417ad07e76fce2394fae8071911a52433994a02d5b1b6a975755a26e1d88f
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
@@ -20,6 +21,8 @@ dataSources:
           eventHandlers:
               - event: Transfer(indexed address,indexed address,uint256)
                 handler: handleTransfer
+          blockHandlers:
+              - handler: handleNewBlock
           file: ./src/veSheep.ts
     # - kind: ethereum
     #   name: LPTokenSheep
