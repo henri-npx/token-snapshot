@@ -1,0 +1,22 @@
+type Registry @entity {
+    id: ID!
+    users: [User!]! @derivedFrom(field: "registry")
+    snapshots: [Snapshot!]! @derivedFrom(field: "registry")
+}
+
+type User @entity {
+    id: ID!
+    registry: Registry!
+    balance: BigInt!
+    updated: BigInt!
+}
+
+# Iterate on every registry.users and take user.balance
+# Handle Block - Every 2 weeks
+type Snapshot @entity {
+    id: ID! #
+    registry: Registry!
+    timestamp: BigInt!
+    stakerAddresses: [Bytes!]!
+    stakerBalances: [BigInt!]!
+}
